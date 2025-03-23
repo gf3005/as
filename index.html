@@ -103,9 +103,10 @@
 
         if (now < startDate) {
           const remainingStartTime = startDate - now;
+          const startHours = Math.floor(remainingStartTime / (1000 * 60 * 60));
           const startMinutes = Math.floor((remainingStartTime % (1000 * 60 * 60)) / (1000 * 60));
           const startSeconds = Math.floor((remainingStartTime % (1000 * 60)) / 1000);
-          document.getElementById("countdown").innerHTML = `countdown starts in: ${startMinutes}m ${startSeconds}s`;
+          document.getElementById("countdown").innerHTML = `countdown starts in: ${startHours}h ${startMinutes}m ${startSeconds}s`;
           return;
         }
 
