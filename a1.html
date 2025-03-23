@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>the countdown🤎</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.2"></script>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #f5efe6, #dcc5a3);
+      color: #5c3d2e;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .countdown-container {
+      position: relative;
+      font-size: 3rem;
+      font-weight: bolder;
+      background: rgba(217, 172, 172, 0.6);
+      padding: 20px 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      z-index: 2;
+      margin-bottom: 20px;
+    }
+
+    .button-container {
+      position: absolute;
+      width: 200vw;
+      height: 200vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .reason {
+      position: absolute;
+      background: #8b0000;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      padding: 20px 20px;
+      font-size: 1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .reason:hover {
+      background: #5c3d2e;
+      transform: scale(1.1);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+    .circle-buttons {
+      position: absolute;
+      width: 900px;
+      height: 600px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .reason:nth-child(1) { top: 2%; left: 50%; transform: translateX(-50%); }
+    .reason:nth-child(2) { top: 12%; left: 85%; }
+    .reason:nth-child(3) { top: 43%; left: 98%; }
+    .reason:nth-child(4) { top: 70%; left: 86%; }
+    .reason:nth-child(5) { top: 82%; left: 50%; transform: translateX(-50%); }
+    .reason:nth-child(6) { top: 70%; left: 8%; }
+    .reason:nth-child(7) { top: 43%; left: -7%; }
+    .reason:nth-child(8) { top: 12%; left: 7%; }
+  </style>
+</head>
+<body>
+  <div class="countdown-container" id="countdown"></div>
+  <audio id="audioPlayer" autoplay></audio>
+  <div class="button-container">
+    <div class="circle-buttons">
+      <button class="reason" onclick="showReason(this, 'i can\'t wait to see my baby\'s face🤎')">March 24</button>
+      <button class="reason" onclick="showReason(this, 'i miss you yapping irl')">March 25</button>
+      <button class="reason" onclick="showReason(this, 'we can sleep on call together hopefully!!')">March 26</button>
+      <button class="reason" onclick="showReason(this, 'you are my favorite person, my favorite feeling, my favorite everything')">March 27</button>
+      <button class="reason" onclick="showReason(this, 'been counting down the days just to see you smile in person again')">March 28</button>
+      <button class="reason" onclick="showReason(this, 'the wait was too long :' + '(')">March 29</button>
+      <button class="reason" onclick="showReason(this, 'i can\'t wait to hold my gorgeous girl')">March 30</button>
+      <button class="reason" onclick="showReason(this, 'Just being with you makes everything better.')">March 31</button>
+    </div>
+  </div>
+  <script>
+    function startCountdown() {
+      const startDate = new Date("March 23, 2025 23:04:00").getTime();
+      const endDate = new Date("March 24, 2025 00:00:00").getTime();
+
+      const timer = setInterval(function() {
+        const now = new Date().getTime();
+
+        if (now < startDate) {
+          const remainingStartTime = startDate - now;
+          const startMinutes = Math.floor((remainingStartTime % (1000 * 60 * 60)) / (1000 * 60));
+          const startSeconds = Math.floor((remainingStartTime % (1000 * 60)) / 1000);
+          document.getElementById("countdown").innerHTML = `countdown starts in: ${startMinutes}m ${startSeconds}s`;
+          return;
+        }
+
+        if (now >= startDate && now < startDate + 1000) {
+          document.getElementById("countdown").innerHTML = "countdown starts: 0s...";
+          return;
+        }
+
+        clearInterval(timer);
+        beginMainCountdown(endDate);
+      }, 1000);
+    }
+
+    function beginMainCountdown(endDate) {
+      const mainTimer = setInterval(function() {
+        const now = new Date().getTime();
+        const distance = endDate - now;
+
+        if (distance < 0) {
+          clearInterval(mainTimer);
+          document.getElementById("countdown").innerHTML = "we're meeting i love you!!!";
+          launchConfetti();
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }, 1000);
+    }
+
+    function launchConfetti() {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+      setTimeout(() => confetti({
+        particleCount: 100,
+        spread: 80,
+        origin: { y: 0.4 }
+      }), 500);
+    }
+
+    function showReason(button, message) {
+      button.innerHTML = message;
+      button.style.backgroundColor = "#5c3d2e";
+    }
+
+    function setDailySong() {
+      const songs = {
+        "2025-03-23": "SpotifyMate.com - Tiny Dancer - Elton John.mp3",
+        "2025-03-25": "SpotifyMate.com - Joy Inside My Tears - Stevie Wonder.mp3",
+        "2025-03-26": "SpotifyMate.com - Everyone Adores You _at least I do_ - Matt Maltese.mp3",
+        "2025-03-27": "SpotifyMate.com - Everywhere - 2017 Remaster - Fleetwood Mac.mp3",
+        "2025-03-28": "SpotifyMate.com - Lee _ Lovie _with reggie_ - Smino.mp3",
+        "2025-03-29": "SpotifyMate.com - Japanese Denim - Daniel Caesar.mp3",
+        "2025-03-30": "SpotifyMate.com - Golden Lady - Stevie Wonder.mp3",
+        "2025-03-31": "SpotifyMate.com - I Think They Call This Love - Cover - Matthew Ifield.mp3",
+        "2025-03-24": "SpotifyMate.com - Islands in the Stream - Dolly Parton.mp3"
+      };
+
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      const currentDate = `${year}-${month}-${day}`;
+
+      const audioPlayer = document.getElementById("audioPlayer");
+      if (audioPlayer) {
+        audioPlayer.src = songs[currentDate] || "";
+        audioPlayer.load();
+        audioPlayer.play().catch(error => console.log("Auto-play prevented:", error));
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      startCountdown();
+      setDailySong();
+    });
+  </script>
+</body>
+</html>
